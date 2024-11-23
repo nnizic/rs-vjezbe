@@ -12,6 +12,8 @@ import datetime
 
 
 class Automobil:
+    """klasa Automobil"""
+
     def __init__(
         self, marka: str, model: str, godina_proizvodnje: int, kilometraza: int
     ):
@@ -34,6 +36,8 @@ class Automobil:
 
 
 class Kalkulator:
+    """klasa Kalkulator"""
+
     def __init__(self, a: float, b: float):
         self.a = a
         self.b = b
@@ -67,6 +71,8 @@ class Kalkulator:
 
 # 3. klasa Student, atributi ime, prezime, godine, ocjene, metoda prosjek
 class Student:
+    """klasa Student"""
+
     def __init__(self, ime: str, prezime: str, godine: int, ocjene: list):
         self.ime = ime
         self.prezime = prezime
@@ -74,10 +80,56 @@ class Student:
         self.ocjene = ocjene
 
     def prosjek(self) -> float:
-        zbroj_ocjena: int = 0
-        for ocjena in self.ocjene:
-            zbroj_ocjena += ocjena
-        return zbroj_ocjena / len(self.ocjene)
+        """računanje prosjeka"""
+        return sum(self.ocjene) / len(self.ocjene)
+
+
+# 4. klasa Krug, atribut r metode opseg, povrsina
+class Krug:
+    """Klasa krug"""
+
+    def __init__(self, r: float) -> None:
+        self.r = r
+
+    def opseg(self) -> float:
+        """izračun opsega"""
+        return 2 * self.r * 3.14
+
+    def povrsina(self) -> float:
+        """izračun površine"""
+        return self.r**2 * 3.14
+
+
+# 5. Klasa RAdnik, atributi ime, pozicija, placa, metoda work
+class Radnik:
+    """klasa radnik"""
+
+    def __init__(self, ime: str, pozicija: str, placa: int):
+        self.ime = ime
+        self.pozicija = pozicija
+        self.placa = placa
+
+    def work(self) -> str:
+        """ispis pozicije"""
+        return f"Radim na poziciji {self.pozicija}"
+
+
+# 5.1 Klasa Manager nasljeđuje klasu Radnik uz atribut department, metode work i give_raise
+class Manager(Radnik):
+    """Klasa Manager"""
+
+    def __init__(self, ime: str, pozicija: str, placa: int, department: str):
+        super().__init__(ime, pozicija, placa)
+        self.department = department
+
+    def work(self) -> str:
+        """ispis pozicije i departmenta"""
+        return f"Radim na poziciji {self.pozicija} u odjelu {self.department}"
+
+    def give_raise(self, radnik: Radnik, povecanje: int) -> str:
+        """dodavanje povišice radnicima"""
+        radnik.placa += povecanje
+        return f"Radniku {radnik.ime} plaća je povećana za {povecanje} €."
 
 
 def main() -> None:
@@ -113,21 +165,38 @@ def main() -> None:
         {"ime": "Iva", "prezime": "Ivić", "godine": 17, "ocjene": [4, 4, 4, 3, 5]},
         {"ime": "Mate", "prezime": "Matić", "godine": 18, "ocjene": [5, 5, 5, 5, 5]},
     ]
-    studenti_objekt = []
-    for student in studenti:
-        studenti_objekt.append(
-            Student(
-                student["ime"], student["prezime"], student["godine"], student["ocjene"]
-            )
+    studenti_objekt = [
+        Student(
+            student["ime"], student["prezime"], student["godine"], student["ocjene"]
         )
+        for student in studenti
+    ]
     for student in studenti_objekt:
         print(f"{student.ime} ima prosjek:{student.prosjek()}")
 
     najbolji_student: list = list(
         filter(lambda student: student.prosjek() == 5.0, studenti_objekt)
     )
-    for student in najbolji_student:
-        print(student.ime)
+    print([[student.ime, student.prosjek()] for student in najbolji_student])
+
+    # rad sa klasom Krug
+    moj_krug: Krug = Krug(5)
+    print(
+        f"Opseg kruga polumjera {moj_krug.r} je {moj_krug.opseg()} a površina {moj_krug.povrsina()}"
+    )
+
+    # rad sa klasom Radnik
+    radnik_Ive: Radnik = Radnik("Ive Ivić", "vratar", 2500)
+    print(f"{radnik_Ive.ime} radi za plaću od {radnik_Ive.placa} € mjesečno. ")
+    print(radnik_Ive.work())
+    admin_Anka: Manager = Manager(
+        "Anka Ankić", "financijski direktor", 3900, "gornja uprava"
+    )
+    print(f"{admin_Anka.ime}")
+    print(admin_Anka.work())
+    print(admin_Anka.give_raise(radnik_Ive, 200))
+
+    print(f"{radnik_Ive.ime} radi za plaću od {radnik_Ive.placa} € mjesečno. ")
 
 
 if __name__ == "__main__":
