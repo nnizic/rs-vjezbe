@@ -1,4 +1,7 @@
 # proizvodi.py
+""" skladište proizvoda """
+
+
 class Proizvod:
     """klasa Proizvod"""
 
@@ -12,9 +15,9 @@ class Proizvod:
         return f"Proizvod {self.naziv}, cijena {self.cijena}, količina {self.kolicina}"
 
 
-proizvodi: list = [Proizvod("Slušalice", 100, 25), Proizvod("Zvučnici", 250, 10)]
+skladiste: list = [Proizvod("Slušalice", 100, 25), Proizvod("Zvučnici", 250, 10)]
 
 
 def dodaj_proizvod(naziv: str, cijena: int, kolicina: int) -> None:
     """dodaje proizvod u listu proizvodi"""
-    proizvodi.append(Proizvod(naziv, cijena, kolicina))
+    skladiste.append(Proizvod(naziv, cijena, kolicina))
