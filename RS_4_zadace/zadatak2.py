@@ -19,7 +19,7 @@ async def get_cat_facts(session) -> list:
 
 async def filter_cat_facts(fact_list: list) -> list:
     """filtriranje riječi cat/s iz liste"""
-    result: list = [macka for macka in fact_list if "cat" in macka]
+    result: list = [macka for macka in fact_list if "cat" in macka.lower()]
     return result
 
 
@@ -30,7 +30,10 @@ async def main() -> None:
             asyncio.create_task(get_cat_facts(session)) for _ in range(20)
         ]
         actual_cat_facts = await asyncio.gather(*cat_fact_tasks)
-        print(await filter_cat_facts(actual_cat_facts))
+        macke: list = await filter_cat_facts(actual_cat_facts)
+        print("ČINJENICE O MAČKAMA:")
+        for macka in macke:
+            print(f"---{macka}")
 
 
 if __name__ == "__main__":
