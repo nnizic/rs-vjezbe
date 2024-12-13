@@ -9,21 +9,23 @@ Lista proizvoda u JSON formatu
 
 from aiohttp import web
 
+proizvodi: list = [
+    {"naziv": "lopata", "cijena": 250, "kolicina": 100},
+    {"naziv": "motika", "cijena": 200, "kolicina": 120},
+    {"naziv": "metla", "cijena": 150, "kolicina": 180},
+]
+
 
 async def get_products(request):
     """korutina za dohvat"""
-    proizvodi: list = [
-        {"naziv": "lopata", "cijena": 250, "kolicina": 100},
-        {"naziv": "motika", "cijena": 200, "kolicina": 120},
-        {"naziv": "metla", "cijena": 150, "kolicina": 180},
-    ]
     return web.json_response(proizvodi)
 
 
 async def post_products(request):
     """korutina za upis"""
     novi_proizvod = await request.json()
-    return web.json_response(novi_proizvod)
+    proizvodi.append(novi_proizvod)
+    return web.json_response(proizvodi)
 
 
 app = web.Application()
