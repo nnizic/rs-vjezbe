@@ -2,6 +2,8 @@
 
 from pydantic import BaseModel
 
+# uz zadatak22
+
 
 class Film(BaseModel):
     """osnovni model filma"""
@@ -18,3 +20,18 @@ class CreateFilm(BaseModel):
     naziv: str
     genre: str
     godina: int
+
+
+# uz zadatak 32
+
+
+class BaseCar(BaseModel):
+    """osnovni model automobila:
+    id, marka, model, godina_proizvodnje, cijena,boja"""
+
+    id: int
+    marka: str
+    model: str
+    godina_proizvodnje: int
+    cijena: float
+    boja: str
