@@ -1,6 +1,6 @@
 """ Obrada grešaka - automobili """
 
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI, HTTPException, status, Query
 from models import BaseCar
 
 app = FastAPI()
@@ -42,3 +42,33 @@ def dohvati_automobil(id: int):
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f"Automobil sa id-em {id} nije pronađen.",
     )
+
+
+@app.get("/automobili/pretraga", response_model=list)
+def dohvati_birane_automobile(
+    min_cijena: int = Query(0, ge=1),
+    max_cijena: int = Query(0, ge=1),
+    min_godina: int = Query(1960, ge=1961, le=2024),
+    max_godina: int = Query(1960, ge=1961, le=2025),
+):
+    """dohvat automobila prema paramterima query-a"""
+    if min_cijena > max_cijena:
+        raise HTTPException(
+            status_code=400, detail="minimalna cijena mora biti manja od maksimalne"
+        )
+    if min_godina > max_godina:
+        raise HTTPException(
+            status_code=400,
+            detail="Minimalni broj godina mora biti manji od maksimalnog.",
+        )
+    filtrirana_vozila: list = []
+    for auto in automobili:
+        if (
+            auto["godina_proizvodnje"] >= min_godina
+            and auto["godina_proizvodnje"] <= max_godina
+            and auto["cijena"] >= min_cijena
+            and auto["cijena"] <= max_cijena
+        ):
+            filtrirana_vozila.append(auto)
+
+    return filtrirana_vozila

@@ -33,5 +33,5 @@ class BaseCar(BaseModel):
     marka: str
     model: str
     godina_proizvodnje: int
-    cijena: float
+    cijena: int
     boja: str
