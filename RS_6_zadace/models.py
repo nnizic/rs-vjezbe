@@ -27,11 +27,25 @@ class CreateFilm(BaseModel):
 
 class BaseCar(BaseModel):
     """osnovni model automobila:
-    id, marka, model, godina_proizvodnje, cijena,boja"""
+    marka, model, godina_proizvodnje, cijena,boja"""
 
-    id: int
     marka: str
     model: str
     godina_proizvodnje: int
     cijena: int
     boja: str
+
+
+class RequestCar(BaseCar):
+    """potražni model automobila:
+    marka, model, godina_proizvodnje, cijena,boja"""
+
+    pass
+
+
+class ResponseCar(BaseCar):
+    """povratni model automobila:
+    id, marka, model, godina_proizvodnje, cijenai, cijna_pdv,boja"""
+
+    id: int
+    cijena_pdv: float

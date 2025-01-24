@@ -1,7 +1,7 @@
 """ Obrada grešaka - automobili """
 
 from fastapi import FastAPI, HTTPException, status, Query
-from models import BaseCar
+from models import ResponseCar, RequestCar
 
 app = FastAPI()
 
@@ -13,6 +13,7 @@ automobili = [
         "model": "civic",
         "godina_proizvodnje": 1982,
         "cijena": 2100,
+        "cijena_pdv": 2100 * 1.25,
         "boja": "plava",
     },
     {
@@ -21,6 +22,7 @@ automobili = [
         "model": "33",
         "godina_proizvodnje": 1990,
         "cijena": 2500,
+        "cijena_pdv": 2500 * 1.25,
         "boja": "zelena",
     },
 ]
@@ -32,7 +34,7 @@ def dohvati_automobile():
     return automobili
 
 
-@app.get("/automobili/{id}", response_model=BaseCar)
+@app.get("/automobili/{id}", response_model=ResponseCar)
 def dohvati_automobil(id: int):
     """dohvat jednog automobila"""
     for auto in automobili:
@@ -44,7 +46,22 @@ def dohvati_automobil(id: int):
     )
 
 
-@app.get("/automobili/pretraga", response_model=list)
+@app.post("/automobili", response_model=ResponseCar)
+def dodaj_automobil(automobil: RequestCar):
+    """dodavanje automobila"""
+    PDV: float = 1.25
+    new_id = automobili[-1]["id"] + 1
+    cijena_pdv: float = automobil.cijena * PDV
+    automobil_za_pohranu: ResponseCar = {
+        **automobil.model_dump(),
+        "id": new_id,
+        "cijena_pdv": cijena_pdv,
+    }
+    automobili.append(automobil_za_pohranu)
+    return automobil_za_pohranu
+
+
+@app.get("/automobili/pretraga/", response_model=list[ResponseCar])
 def dohvati_birane_automobile(
     min_cijena: int = Query(0, ge=1),
     max_cijena: int = Query(0, ge=1),
