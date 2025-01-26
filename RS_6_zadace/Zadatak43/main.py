@@ -1,11 +1,14 @@
 """ glavna datoteka mikroservisa za filmove """
 
-import json
+from fastapi import FastAPI
+from routers.filmovi import router as filmovi_router
 
-filmovi = open("filmovi_json/Film.JSON")
+app = FastAPI()
 
-filmovi = json.load(filmovi)
+app.include_router(filmovi_router)
 
 
-for film in filmovi:
-    print(f"NAziv: {film["Title"]} , godina: {film["Year"]}")
+@app.get("/")
+def home():
+    """osnovni odgovor servisa"""
+    return {"poruka": "Microservis za filmove" "Microservis za filmove"}
