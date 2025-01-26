@@ -1,7 +1,7 @@
 """ pydantic scheme za filmove  """
 
+from typing import Literal, Optional
 from pydantic import BaseModel, Field
-from typing import Literal
 
 
 class Person(BaseModel):
@@ -33,9 +33,7 @@ class Film(BaseModel):
     """osnovi model za film"""
 
     Title: str
-    Year: str
     Rated: str
-    Runtime: str
     Genre: str
     Language: str
     Country: str
@@ -48,8 +46,6 @@ class Film(BaseModel):
     Released: str = Field(default="undefined")
     Awards: str = Field(default="0 wins & 0 nominations.")
     Poster: str = Field(default="undefined")
-    Metascore: str = Field(default="undefined")
-    imdbRating: str = Field(default="undefined")
     imdbVotes: str = Field(default="undefined")
     imdbID: str = Field(default="undefined")
     Response: str = Field(default="undefined")
@@ -58,4 +54,9 @@ class Film(BaseModel):
 class FilmResponse(Film):
     """schema za dohvat filma"""
 
-    pass
+    ComingSoon: Optional[bool] = False
+    totalSeasons: Optional[int] = 0
+    Year: int
+    imdbRating: float
+    Metascore: float
+    Runtime: int
