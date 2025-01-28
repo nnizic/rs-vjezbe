@@ -2,7 +2,7 @@
 
 import re
 import json
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from models import FilmResponse
 
 
@@ -76,3 +76,12 @@ def get_filmovi():
         filmovi, numericki_kljucevi, ne_numericki_kljucevi
     )
     return parsani_filmovi
+
+
+@router.get("/{naziv}")
+def get_film(naziv: str):
+    """dohvat jednog filma"""
+    for film in filmovi:
+        if film["Title"] == naziv:
+            return film
+    raise HTTPException(status_code=404, detail="Film nije pronađen.")

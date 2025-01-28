@@ -11,4 +11,4 @@ app.include_router(filmovi_router)
 @app.get("/")
 def home():
     """osnovni odgovor servisa"""
-    return {"poruka": "Microservis za filmove" "Microservis za filmove"}
+    return {"poruka": "Microservis za filmove RS 2024-25"}
