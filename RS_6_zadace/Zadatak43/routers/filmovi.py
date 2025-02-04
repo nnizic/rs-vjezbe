@@ -66,22 +66,41 @@ except FileNotFoundError:
 
 router = APIRouter(prefix="/filmovi")
 
+# liste numerički i ne numeričkih vrijednosti
+
+numericki_kljucevi: list = ["Year", "Runtime", "Metascore", "imdbRating"]
+ne_numericki_kljucevi: list = ["Title"]
+
 
 @router.get("/", response_model=list[FilmResponse])
 def get_filmovi():
     """dohvat svih filmova"""
-    numericki_kljucevi: list = ["Year", "Runtime", "Metascore", "imdbRating"]
-    ne_numericki_kljucevi: list = ["Title"]
     parsani_filmovi = pretvori_brojeve(
         filmovi, numericki_kljucevi, ne_numericki_kljucevi
     )
     return parsani_filmovi
 
 
-@router.get("/{naziv}")
+@router.get("/{naziv}", response_model=FilmResponse)
 def get_film(naziv: str):
     """dohvat jednog filma"""
     for film in filmovi:
+
         if film["Title"] == naziv:
-            return film
+            parsani_film = pretvori_brojeve(
+                film, numericki_kljucevi, ne_numericki_kljucevi
+            )
+            return parsani_film
+    raise HTTPException(status_code=404, detail="Film nije pronađen.")
+
+
+@router.get("/imdb/{imdbid}", response_model=FilmResponse)
+def get_imdb_film(imdbid: str):
+    """dohvat jednog filma"""
+    for film in filmovi:
+        if film["imdbID"] == imdbid:
+            parsani_imdb_film = pretvori_brojeve(
+                film, numericki_kljucevi, ne_numericki_kljucevi
+            )
+            return parsani_imdb_film
     raise HTTPException(status_code=404, detail="Film nije pronađen.")
