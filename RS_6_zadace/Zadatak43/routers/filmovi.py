@@ -73,12 +73,26 @@ ne_numericki_kljucevi: list = ["Title"]
 
 
 @router.get("/", response_model=list[FilmResponse])
-def get_filmovi():
+def get_filmovi(
+    min_year: int = 1900,
+    max_year: int = 2100,
+    min_rating: float = 0.0,
+    max_rating: float = 11.00,
+):
     """dohvat svih filmova"""
     parsani_filmovi = pretvori_brojeve(
         filmovi, numericki_kljucevi, ne_numericki_kljucevi
     )
-    return parsani_filmovi
+    filtrirani_filmovi = []
+    for film in parsani_filmovi:
+        if (
+            film["Year"] >= min_year
+            and film["Year"] <= max_year
+            and film["imdbRating"] >= min_rating
+            and film["imdbRating"] <= max_rating
+        ):
+            filtrirani_filmovi.append(film)
+    return filtrirani_filmovi
 
 
 @router.get("/{naziv}", response_model=FilmResponse)
