@@ -1,0 +1,18 @@
+services:
+  authapi:
+    image: authapi:1.0
+    ports:
+      - '9000:9000'
+    networks:
+      - socijalna_mreza
+
+  socialapi:
+    image: socialapi:1.0
+    ports:
+      - '8000:8000'
+    networks:
+      - socijalna_mreza
+
+networks:
+  socijalna_mreza:
+    driver: bridge
