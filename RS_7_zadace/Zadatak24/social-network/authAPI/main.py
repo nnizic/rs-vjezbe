@@ -32,19 +32,9 @@ async def login_function(request):
     for korisnik in korisnici:
         if korisnik["korisnicko_ime"] == data["korisnicko_ime"]:
             if korisnik["lozinka_hash"] == hash_data(data["lozinka"]):
-                return web.Response(
-                    status=200,
-                    reason="OK",
-                    text=f"Korisnik {korisnik["korisnicko_ime"]} pronađen.",
-                )
-            return web.Response(
-                status=404, reason="Not Found", text="Neispravna lozinka."
-            )
-    return web.Response(
-        status=404,
-        reason="Not Found",
-        text=f"Korisnik {data["korisnicko_ime"]} nije pronađen.",
-    )
+                return web.json_response({"poruka": "Korisnik pronađen"}, status=200)
+            return web.json_response({"poruka": "Neispravna lozinka"}, status=404)
+    return web.json_response({"poruka": "Korisnik nije pronađen"}, status=404)
 
 
 app.router.add_get("/", handler_function)

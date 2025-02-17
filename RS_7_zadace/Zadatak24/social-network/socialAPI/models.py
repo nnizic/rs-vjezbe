@@ -1,4 +1,4 @@
-""" osnovni modeli za socialAPI """
+"""osnovni modeli za socialAPI"""
 
 from datetime import datetime
 from typing import Optional
@@ -6,6 +6,11 @@ from typing import Optional
 from pydantic import BaseModel
 
 ct = datetime.now()
+
+
+class User(BaseModel):
+    korisnicko_ime: str
+    lozinka: str
 
 
 class BlogRequest(BaseModel):

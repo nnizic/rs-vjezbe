@@ -1,9 +1,9 @@
 """fastapi mikroservis za blogove"""
 
 import aiohttp
-
 from fastapi import FastAPI, HTTPException
-from models import BlogRequest, BlogRespond
+
+from models import BlogRequest, BlogRespond, User
 
 app = FastAPI()
 blogovi: list = [
@@ -30,11 +30,27 @@ blogovi: list = [
 
 # komunikacija između servisa:
 @app.post("/login")
-async def user_login(request):
+async def login(data: User):
+
     async with aiohttp.ClientSession() as session:
-        response = await session.post("http://authapi:9000/login", json=request)
-        odgovor = await response.json()
-        return odgovor
+        async with session.post(
+            "http://authapi:9000/login", json=data.dict()
+        ) as response:
+            if response.status != 200:
+                raise HTTPException(
+                    status_code=response.status,
+                    detail=f"Login failed {response.status}: {await response.json()}",
+                )
+            response_data = await response.json()
+            return {"poruka": "Login OK", "odgovor": response_data}
+
+
+@app.get("/users")
+async def getu_sers():
+    async with aiohttp.ClientSession() as session:
+        response = await session.get("http://authapi:9000")
+        korisnici = await response.json()
+        return korisnici
 
 
 @app.get("/objava", response_model=list[BlogRespond])
