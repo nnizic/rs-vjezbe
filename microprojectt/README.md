@@ -33,12 +33,4 @@
 
 - prima JSON sa listom brojeva (lista_brojeva)
 - dodaje neparne brojeve pri svakom pozivu 2, 4, 6...
-- vraća ažuriranu listu- prima JSON sa listom brojeva (lista_brojeva)
-- dodaje neparne brojeve pri svakom pozivu 1, 3, 5...
-- vraća ažuriranu listu
-
-**Servis_3**
-
-- prima JSON sa listom brojeva (lista_brojeva)
-- dodaje neparne brojeve pri svakom pozivu 2, 4, 6...
 - vraća ažuriranu listu
